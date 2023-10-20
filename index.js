@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 5000;
-
+require('dotenv').config();
 app.use(cors());
 app.use(express.json());
 
@@ -11,8 +11,8 @@ app.use(express.json());
 
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://AutoMobile:GBq4yUltnjzjik6Y@try-myself.0cjln25.mongodb.net/?retryWrites=true&w=majority";
-
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@try-myself.0cjln25.mongodb.net/?retryWrites=true&w=majority`;
+console.log(uri);
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -27,7 +27,7 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    const productCollection = client.db('ProductDB').collection('product')
+    const productCollection = client.db('ProductDB').collection('carsCollection')
 
 app.get('/product',async(req,res)=>{
     const cursor = productCollection.find();
